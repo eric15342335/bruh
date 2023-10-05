@@ -1,0 +1,25 @@
+# PyCharm Configuration Files
+.idea
+
+# Compiled Python Bytecode
+**/__pycache__
+
+# PyInstaller
+build
+dist
+*.spec
+pyinstaller*.whl
+
+# Cython
+Cython*
+*.pyd
+src/build
+
+# Compiled object files
+*.c
+*.o
+*.obj
+*.exe
+
+# UPX
+upx.exe

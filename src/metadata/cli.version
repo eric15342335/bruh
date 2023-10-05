@@ -1,0 +1,21 @@
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=(1, 3, 3, 0)
+    ),
+  kids=[
+    StringFileInfo(
+      [
+      StringTable(
+        u'040904B0',
+        [StringStruct(u'CompanyName', u'\0'),
+        StringStruct(u'FileDescription', u'Spam Bot Command-Line Interface'),
+        StringStruct(u'FileVersion', u'\0'),
+        StringStruct(u'InternalName', u'\0'),
+        StringStruct(u'LegalCopyright', u'\0'),
+        StringStruct(u'OriginalFilename', u'\0'),
+        StringStruct(u'ProductName', u'Spam Bot CLI'),
+        StringStruct(u'ProductVersion', u'1.3.3')])
+      ]),
+    VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
+  ]
+)

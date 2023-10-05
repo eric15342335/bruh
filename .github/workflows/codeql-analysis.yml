@@ -1,0 +1,21 @@
+name: Github CodeQL
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  CodeQL:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: 'python'
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
