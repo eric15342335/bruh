@@ -1,6 +1,6 @@
 {
     "There is no Server here": {
-        "address": "0.0.0.0",
-        "port": 0
+        "address": "138.19.99.12",
+        "port": 25564
     }
 }

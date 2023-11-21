@@ -46,13 +46,10 @@ while True:
                 spam = utils.SpamBot(spam_times, SPAM_INTERVAL, res)
                 time.sleep(4)
 
-                # pylint: disable=inconsistent-return-statements\
-                def on_press(key) -> bool:
+                def on_press(key) -> None:
                     """See pynput documentation"""
                     if key == pynput.keyboard.Key.shift:
                         spam.reset()
-                        return False
-
 
                 def paste() -> None:
                     """Simulate LEFT_CONTROL + V"""
@@ -69,7 +66,6 @@ while True:
                     # we help him press shift after the spam ends
                     keyboard.press(pynput.keyboard.Key.shift)
                     keyboard.release(pynput.keyboard.Key.shift)
-
 
                 paste_thread = threading.Thread(target=paste)
                 paste_thread.start()
@@ -89,14 +85,10 @@ while True:
             try:
                 spam = utils.SpamBot(int(click_times), False, res)
 
-                # pylint: disable=inconsistent-return-statements
-
-                def on_press(key) -> bool:
+                def on_press(key) -> None:
                     """See pynput documentation"""
                     if key == pynput.keyboard.Key.shift:
                         spam.reset()
-                        return False
-
 
                 def click() -> None:
                     """Spam clicks for specific times"""
@@ -106,7 +98,6 @@ while True:
                         time.sleep(0.01)
                     keyboard.press(pynput.keyboard.Key.shift)
                     keyboard.release(pynput.keyboard.Key.shift)
-
 
                 click_thread = threading.Thread(target=click)
                 click_thread.start()
@@ -129,15 +120,19 @@ while True:
                 print("List of available servers:")
                 try:
                     for a in server_get:
-                        print(f"{list(server_get).index(a) + 1}) {a} "
-                              f"{server_get[a]['address']}:{server_get[a]['port']}")
+                        print(
+                            f"{list(server_get).index(a) + 1}) {a} "
+                            f"{server_get[a]['address']}:{server_get[a]['port']}"
+                        )
                 except IndexError:
                     print("Error: No server found.")
                 ip_address = requests.get("https://httpbin.org/ip").json()["origin"]
                 print(f"Your IP address is {ip_address}")
                 while True:
                     print("\nWhich server would you like to connect?")
-                    selected = input(f"Enter {list(range(1, len(server_get) + 1))}, or 0 for dedicated IP address : ")
+                    selected = input(
+                        f"Enter {list(range(1, len(server_get) + 1))}, or 0 for dedicated IP address : "
+                    )
                     try:
                         selected = int(selected)
                         if selected == 0:
@@ -154,12 +149,14 @@ while True:
                                     print("Please enter a valid value.")
                             break
                         selected_server = server_get[list(server_get)[selected - 1]]
-                        chat_ip, port = (selected_server["address"], selected_server["port"],)
+                        chat_ip, port = (
+                            selected_server["address"],
+                            selected_server["port"],
+                        )
                         break
                     except ValueError:
                         print("Please enter a valid value.")
                 print(f"\nConnecting to {chat_ip}:{port}")
-
 
                 def receive() -> None:
                     """Thread for receive incoming TCP packet"""
@@ -171,7 +168,6 @@ while True:
                         except socket.error:
                             break
 
-
                 def send() -> None:
                     """Thread for sending outgoing TCP packet"""
                     while True:
@@ -180,9 +176,12 @@ while True:
                         if message == "/exit":
                             s.close()
                         else:
-                            s.send(f"{utils.return_time()}[{username}]{message}".encode(utils.ENCODING))
+                            s.send(
+                                f"{utils.return_time()}[{username}]{message}".encode(
+                                    utils.ENCODING
+                                )
+                            )
                             res.sound_effect("send")
-
 
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 try:
@@ -193,9 +192,17 @@ while True:
                     username = input("Username =")
                     receive_thread = threading.Thread(target=receive)
                     receive_thread.start()
-                    s.send(f"{utils.return_time()}[{username}]{utils.PING_MESSAGE}".encode(utils.ENCODING))
-                    print("\nEnter your message below and press enter to send the message.")
-                    print("Type '/clients' to show the existing connections on the server,")
+                    s.send(
+                        f"{utils.return_time()}[{username}]{utils.PING_MESSAGE}".encode(
+                            utils.ENCODING
+                        )
+                    )
+                    print(
+                        "\nEnter your message below and press enter to send the message."
+                    )
+                    print(
+                        "Type '/clients' to show the existing connections on the server,"
+                    )
                     print("type '/exit' to return to the main menu.")
                     send()
                 except socket.error as error:
@@ -224,7 +231,10 @@ while True:
             mode = input("Y/N =")
             if mode in ("Y", "y"):
                 LOG_RECORD = 1
-                logging.basicConfig(filename=f"[{server_name}]{utils.return_time(True)}", level=logging.INFO)
+                logging.basicConfig(
+                    filename=f"[{server_name}]{utils.return_time(True)}",
+                    level=logging.INFO,
+                )
                 break
             if mode in ("N", "n"):
                 LOG_RECORD = 0
@@ -259,24 +269,29 @@ while True:
                 except socket.error:
                     pass
 
-
             try:
                 test_thread = threading.Thread(target=test_reachability)
                 test_thread.start()
                 s.settimeout(3)
                 s.connect((API_IP_address, listen_port))
                 test_thread.join()
-                print("Self-reachability test indicate your listen port is reachable. "
-                      "Excellent. Waiting for incoming connections.\n")
+                print(
+                    "Self-reachability test indicate your listen port is reachable. "
+                    "Excellent. Waiting for incoming connections.\n"
+                )
                 try:
                     s.close()
                 except socket.error:
                     pass
             except OSError as error_test:
                 print(error_test)
-                print("Self-reachability test failed. Server will continue to listen incoming connections.\n")
+                print(
+                    "Self-reachability test failed. Server will continue to listen incoming connections.\n"
+                )
         else:
-            print("Cannot start self-reachability test. Server will continue to listen incoming connections.\n")
+            print(
+                "Cannot start self-reachability test. Server will continue to listen incoming connections.\n"
+            )
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(("", listen_port))
         CAPACITY = 20
@@ -288,7 +303,6 @@ while True:
         USERNAME = "[Bot]"
         client_list = []
         exist_conn_address = []
-
 
         def server_receive() -> None:
             """Server Thread for handling incoming TCP packets
@@ -305,7 +319,9 @@ while True:
                     # log(f"Client list : {str(client_list)}")
                     # log(f"Client address : {client_address}")
                     client_address_2 = client_address.replace("[", " ").strip("]")
-                    broadcast(f"{IP_address}{utils.return_time()}{USERNAME}{client_address_2} is connected.")
+                    broadcast(
+                        f"{IP_address}{utils.return_time()}{USERNAME}{client_address_2} is connected."
+                    )
                     while True:
                         try:
                             received = conn.recv(utils.BUFFER)
@@ -313,20 +329,36 @@ while True:
                             # log(client_address + received_decoded, True)
                             res.sound_effect("receive")
                             if utils.PING_MESSAGE in received_decoded:
-                                conn.send(f"{IP_address}{utils.return_time()}"
-                                          f"{USERNAME} Welcome to {server_name}!".encode(utils.ENCODING))
+                                conn.send(
+                                    f"{IP_address}{utils.return_time()}"
+                                    f"{USERNAME} Welcome to {server_name}!".encode(
+                                        utils.ENCODING
+                                    )
+                                )
                                 # log(f"{IP_address}{utils.return_time()}" f"{USERNAME} Welcome to {server_name}
                                 # server!")
-                                conn.send(f"{IP_address}{utils.return_time()}"
-                                          f"{USERNAME} Server version {VERSION}".encode(utils.ENCODING))
+                                conn.send(
+                                    f"{IP_address}{utils.return_time()}"
+                                    f"{USERNAME} Server version {VERSION}".encode(
+                                        utils.ENCODING
+                                    )
+                                )
                                 # log(f"{IP_address}{utils.return_time()}{USERNAME} Server is "
                                 #    f"running the version {VERSION}")
                             elif "/clients" in received_decoded:
-                                conn.send(f"{IP_address}{utils.return_time()}"
-                                          f"{USERNAME}Existing Connections List:".encode(utils.ENCODING))
-                                for index, user_address in enumerate(exist_conn_address):
-                                    request2 = (f"{IP_address}{utils.return_time()}"
-                                                f"{USERNAME} {index}) {user_address}")
+                                conn.send(
+                                    f"{IP_address}{utils.return_time()}"
+                                    f"{USERNAME}Existing Connections List:".encode(
+                                        utils.ENCODING
+                                    )
+                                )
+                                for index, user_address in enumerate(
+                                    exist_conn_address
+                                ):
+                                    request2 = (
+                                        f"{IP_address}{utils.return_time()}"
+                                        f"{USERNAME} {index}) {user_address}"
+                                    )
                                     conn.send(request2.encode(utils.ENCODING))
                                     time.sleep(0.2)
                             else:
@@ -340,18 +372,20 @@ while True:
                                 exist_conn_address.remove(address)
                                 conn.close()
                                 broadcast(
-                                    IP_address + utils.return_time() + USERNAME + client_address_2 +
-                                    " is disconnected.")
+                                    IP_address
+                                    + utils.return_time()
+                                    + USERNAME
+                                    + client_address_2
+                                    + " is disconnected."
+                                )
                             break
                 except OSError:
                     break
-
 
         server_threads = []
         for a in range(10):
             server_threads.append(threading.Thread(target=server_receive))
             server_threads[a].start()
-
 
         def broadcast(message: str) -> None:
             """
@@ -364,15 +398,20 @@ while True:
                     # send the message to nth client in the list
                     client_list[n].send(message.encode(utils.ENCODING))
                     n += 1  # next client
-                except socket.error:  # usually because client was disconnected at that moment
+                except (
+                    socket.error
+                ):  # usually because client was disconnected at that moment
                     client_n = client_list[n]  # store the socket object for close()
                     client_list.remove(client_n)
-                    address_n = exist_conn_address[n]  # store the address for broadcasting who has disconnected
+                    address_n = exist_conn_address[
+                        n
+                    ]  # store the address for broadcasting who has disconnected
                     exist_conn_address.remove(address_n)
                     # address is more readable than conn
-                    broadcast(f"{utils.return_time()}[Server Broadcast]{str(address_n)} is disconnected.")
+                    broadcast(
+                        f"{utils.return_time()}[Server Broadcast]{str(address_n)} is disconnected."
+                    )
                     client_n.close()
-
 
         def admin_function() -> None:
             """Contains function for the admin to use"""
@@ -404,9 +443,15 @@ while True:
                                 client_list.remove(client_conn)
                                 client_address = exist_conn_address[which_connection]
                                 exist_conn_address.remove(client_address)
-                                client_conn.send("You have been kicked from the server.".encode(utils.ENCODING))
+                                client_conn.send(
+                                    "You have been kicked from the server.".encode(
+                                        utils.ENCODING
+                                    )
+                                )
                                 client_conn.close()
-                                broadcast(f"{client_address} has been kicked by the server.")
+                                broadcast(
+                                    f"{client_address} has been kicked by the server."
+                                )
                                 break
                             except IndexError:  # t
                                 print("Invalid value, please enter again!")
@@ -415,7 +460,10 @@ while True:
                         except ValueError:
                             print("Invalid value, please enter again!")
                 elif message == "/close":
-                    broadcast(f"{utils.return_time()}" f"[Server Broadcast]Server shutdown in 10 seconds.")
+                    broadcast(
+                        f"{utils.return_time()}"
+                        f"[Server Broadcast]Server shutdown in 10 seconds."
+                    )
                     # log("Server shutdown in 10 seconds. (/close)", True)
                     for countdown in range(10, 0, -1):
                         broadcast(str(countdown))
@@ -429,7 +477,6 @@ while True:
                 else:
                     print("Invalid command, please enter again!")
 
-
         admin_function()
     elif choice in ("X", "x"):
         while True:
@@ -437,7 +484,9 @@ while True:
             print(f"1) Enable Sound [{res.sound_enable}]")
             print("0) Menu")
             print("\nWhich setting do you want to change?")
-            setting_choice = input("Setting =", )
+            setting_choice = input(
+                "Setting =",
+            )
             if setting_choice == "1":
                 if res.sound_enable:
                     res.sound_enable = False
@@ -459,7 +508,9 @@ while True:
                 for imp in list(newest_version):
                     print(f'{imp}: {newest_version[imp]["version"]}')
                 if newest_version[utils.CLI()]["version"] != VERSION:
-                    print(f"\nNew version {newest_version[utils.CLI()]['version']} is available!")
+                    print(
+                        f"\nNew version {newest_version[utils.CLI()]['version']} is available!"
+                    )
                 else:
                     print("\nProgram is up-to-date!")
         except OSError as network_error:

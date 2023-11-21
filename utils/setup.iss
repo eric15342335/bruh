@@ -25,7 +25,6 @@ LicenseFile=LICENSE.txt
 
 [Files]
 Source: "dist\spambotgui\*"; DestDir: "{app}"; Flags: recursesubdirs
-Source: "utils\rickroll.exe"; DestDir: "{app}";
 
 [Icons]
 Name: "{group}\Launch"; Filename: "{app}\spambotgui.exe"
@@ -33,4 +32,4 @@ Name: "{group}\Uninstall"; Filename: "{app}\unins000.exe"
 
 [Run]
 Filename: "{app}\spambotgui.exe"; Description: "Launch"; Flags: postinstall nowait skipifsilent
-Filename: "{app}\rickroll.exe"; Description: "Rickroll yourself"; Flags: postinstall nowait skipifsilent
+

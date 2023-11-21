@@ -1,3 +1,4 @@
+# place under src/ for usage
 import json
 import utils
 
@@ -8,7 +9,8 @@ filedesp = ["Spam Bot Command-Line Interface"]
 prodname = ["Spam Bot CLI"]
 prodver = [utils.getversion(utils.CLI)]
 for i in range(1):
-    print(rf"""
+    print(
+        rf"""
 VSVersionInfo(
   ffi=FixedFileInfo(
     filevers=({filevers[i]})
@@ -20,9 +22,9 @@ VSVersionInfo(
         u'040904B0',
         [StringStruct(u'CompanyName', u'\0'),
         StringStruct(u'FileDescription', u'{filedesp[i]}'),
-        StringStruct(u'FileVersion', u'\0'),
+        StringStruct(u'FileVersion', u'{prodver[i]}'),
         StringStruct(u'InternalName', u'\0'),
-        StringStruct(u'LegalCopyright', u'\0'),
+        StringStruct(u'LegalCopyright', u'eric15342335'),
         StringStruct(u'OriginalFilename', u'\0'),
         StringStruct(u'ProductName', u'{prodname[i]}'),
         StringStruct(u'ProductVersion', u'{prodver[i]}')])
@@ -30,4 +32,5 @@ VSVersionInfo(
     VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
   ]
 )
-    """)
+    """
+    )
