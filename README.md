@@ -47,20 +47,21 @@ pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "src/metadata/g
 ```
 PyInstaller Documentation: [Here](https://pyinstaller.org/en/stable/usage.html)
 ## File structure
-.github # Github actions for CodeQL analysis
-get
-src     # files crucial for running the program
-src/metadata    # windows metadata for the program
-src/res     # resources(images,audios) for the program
-utils       # utilities for packaging the program
-.gitignore  # gitignore
-CHANGELOG.txt   # changelog
-LICENSE.txt    # Apache License
-README.md   # this file
-requirements.txt    # dependencies
-
+```
+.github             # Github actions for CodeQL analysis 
+get                 # Server lists for chatroom and version lists for checking updates 
+src                 # files crucial for running the program 
+src/metadata        # windows metadata for the program 
+src/res             # resources(images,audios) for the program 
+utils               # utilities for packaging the program 
+.gitignore          # gitignore 
+CHANGELOG.txt       # changelog 
+LICENSE.txt         # Apache License 
+README.md           # this file 
+requirements.txt    # dependencies 
+```
 ## Appreciation
-I would like to thank the following people:
+I would like to thank the following people: <br>
 1. PyInstaller developers (bwoodsend, rokm, Legorooj, and many more), for teaching me how to package my app in a friendly minder
 2. My friends who helped me to test the program
 3. And you, for reading this README.md

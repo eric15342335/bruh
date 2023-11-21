@@ -14,10 +14,10 @@ import requests
 
 import utils
 
-VERSION = utils.getversion(utils.CLI)
+VERSION = utils.versions["CLI"]["version"]
 mouse = pynput.mouse.Controller()
 keyboard = pynput.keyboard.Controller()
-res = utils.Resources(utils.CLI)
+res = utils.Resources(0)
 
 while True:
     print(f"Spam Bot CLI v{VERSION}")
@@ -478,7 +478,7 @@ while True:
                     print("Invalid command, please enter again!")
 
         admin_function()
-    elif choice in ("X", "x"):
+    elif choice in "5":
         while True:
             print("Settings")
             print(f"1) Enable Sound [{res.sound_enable}]")
@@ -507,9 +507,9 @@ while True:
                 res.sound_effect("notice")
                 for imp in list(newest_version):
                     print(f'{imp}: {newest_version[imp]["version"]}')
-                if newest_version[utils.CLI()]["version"] != VERSION:
+                if newest_version["CLI"]["version"] != VERSION:
                     print(
-                        f"\nNew version {newest_version[utils.CLI()]['version']} is available!"
+                        f"\nNew version {newest_version['CLI']['version']} is available!"
                     )
                 else:
                     print("\nProgram is up-to-date!")

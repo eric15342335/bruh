@@ -15,43 +15,20 @@ BUFFER = 4096
 ENCODING = "utf-8"
 PING_MESSAGE = " Client PING"
 
-
-class CLI:
-    """CLI object, pretty useless"""
-
-    def __str__(self) -> str:
-        return "CLI"
-
-
-class GUI:
-    """Same as above"""
-
-    def __str__(self) -> str:
-        return "GUI"
-
-
 versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.5.7"}}
-
-
-def getversion(_script: [CLI, GUI]) -> str:
-    """getversion(CLI) or getversion(GUI)"""
-    return versions[str(_script())]["version"]
-
-
-assert getversion(CLI) == versions[str(CLI())]["version"]
 
 
 class Resources:
     """Accessing files"""
 
-    def __init__(self, _script: [CLI, GUI]) -> None:
+    def __init__(self, _script: [0, 1]) -> None:
         self.base_path = getattr(
             sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))
         )
         self.sound_enable = True
-        if _script == CLI:
+        if _script == 0:    # cli only need .wav file
             self._initialize(".wav")
-        elif _script == GUI:
+        elif _script == 1:  # gui need to preload all files
             self._initialize()
 
     def _initialize(self, ends: str = "") -> None:

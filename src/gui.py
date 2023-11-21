@@ -1,14 +1,5 @@
 """
-Source Code of Spam Bot GUI (gui.py)
-
-Version description: 0.5.6
-Changelog:
-- Code Refactoring
-- Move from pyautogui to Tkinter
-- Several adjustments
-Issues:
-- Paste-Bot Click-Bot double textbox/text label issue
-- Click-Bot second time not work
+gui.py 0.6-dev
 """
 # -*- coding:utf-8 -*-
 import socket
@@ -33,10 +24,10 @@ try:
 except ImportError:
     pyi_splash = None
 
-VERSION = utils.getversion(utils.CLI)
+VERSION = utils.versions["GUI"]["version"]
 mouse = pynput.mouse.Controller()
 keyboard = pynput.keyboard.Controller()
-res = utils.Resources(utils.CLI)
+res = utils.Resources(1)
 
 
 def exit_program() -> None:
@@ -396,8 +387,7 @@ def clipboard_check() -> None:
                                     try:
                                         sock.close()
                                         cb_exp_msg_button.configure(
-                                            text="Disconnected", command=time.sleep(0.1)
-                                        )
+                                            text="Disconnected")
                                         clipboard_list.insert(
                                             tkinter.END, "You are disconnected."
                                         )
@@ -407,8 +397,7 @@ def clipboard_check() -> None:
                                 def sentmsg_sent() -> None:
                                     """Thread for sending outgoing TCP packet"""
                                     send_message_button.configure(
-                                        text="Send", command=time.sleep(0.1)
-                                    )
+                                        text="Send")
                                     clipboard_display.update_idletasks()
                                     try:
                                         sock.send(
@@ -527,11 +516,11 @@ def check_update() -> None:
                 update_info.insert(
                     tkinter.END, f'{imp}: {newest_version[imp]["version"]}'
                 )
-            if newest_version[utils.GUI]["version"] != VERSION:
+            if newest_version["GUI"]["version"] != VERSION:
                 update_info.insert(
                     tkinter.END,
                     "",
-                    f"New version {newest_version[utils.GUI]['version']} is available!",
+                    f"New version {newest_version['GUI']['version']} is available!",
                 )
             else:
                 update_info.insert(tkinter.END, "Program is up-to-date!")
@@ -620,7 +609,7 @@ button3.place(height=40, width=160, x=320, y=70)
 class Clock:
     """Display CPU load and current time"""
 
-    interval = 500  # refresh rate, in milisecond
+    interval = 500  # refresh rate, in millisecond
     enabled = tkinter.BooleanVar()
     enabled.set(False)
 
