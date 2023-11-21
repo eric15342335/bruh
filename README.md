@@ -28,7 +28,7 @@ gui interface: python3 src/gui.py
 ## Packaging instructions
 (Optional) Optimize file size by excluding useless packages: <br>
 ```
-set Excludes=--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude pyexpat --exclude lib2to3 --exclude xml --exclude difflib --exclude distutils --exclude sysconfig --exclude pickle
+set Excludes=--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude lib2to3 --exclude difflib --exclude distutils --exclude pickle
 ```
 Set my custom hook for pyinstaller and icons: <br>
 ```

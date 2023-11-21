@@ -15,7 +15,7 @@ BUFFER = 4096
 ENCODING = "utf-8"
 PING_MESSAGE = " Client PING"
 
-versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.6.0"}}
+versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.6.1"}}
 
 
 class Resources:
@@ -93,11 +93,12 @@ class SpamBot:
             self, times: int, interval: bool, res: Resources, root: tkinter.Tk = None
     ) -> None:
         """parse variables to SpamBot class"""
+        #winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
         self.times = times
         if interval:
-            self.interval = 0.1
+            self.interval = 0.5
         else:
-            self.interval = 0
+            self.interval = 0.1
         self.times_spammed = 0
         """ Creates a Tkinter window to display warning texts """
         if root:
@@ -106,13 +107,14 @@ class SpamBot:
         else:
             notification = tkinter.Tk()
             self.root = notification
+
         notification.title("Spam Bot Ready")
         notification.attributes("-topmost", True)
 
         notification.geometry("%sx%s+%s+%s" % centre_coordinate(self.root, 350, 100))
-        notification.after(50, notification.iconbitmap(res.abspath("res/riva.ico")))
-        notification.after(150, notification.focus_force)
-        notification.resizable()
+        notification.resizable(False, False)
+        notification.iconbitmap(res.abspath("res/riva.ico"))
+        notification.focus_force()
 
         notific_text = tkinter.Text(notification, font=("TkDefaultFont", 10))
         notific_text.insert(tkinter.END, self.alert_text)
@@ -121,6 +123,8 @@ class SpamBot:
             notification, text="Okay", command=notification.quit, bd=1.8
         )
         notific_button.place(height=30, width=90, anchor="center", x=175, y=75)
+
+        winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
 
         notification.mainloop()
         notification.destroy()
@@ -135,8 +139,7 @@ class SpamBot:
 
     def finished(self) -> bool:
         """Check if spamming is finished"""
-        if self.times_spammed > self.times:
-            return True
-        return False
+        return self.times_spammed > self.times
+
 
 # SpamBot(1, True, Resources(GUI))

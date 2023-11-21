@@ -1,5 +1,5 @@
 """
-gui.py 0.6-dev
+gui.py 0.7-dev
 """
 # -*- coding:utf-8 -*-
 import socket
@@ -16,7 +16,11 @@ import requests
 from PIL import ImageTk, Image
 
 import utils
-
+"""
+Issue: Keyboard listener is not working properly in GUI,
+but it works fine in CLI.
+Current Solution: Temporarily comment out the keyboard listener code in GUI.
+"""
 try:
     import pyi_splash
 
@@ -124,12 +128,10 @@ def autopastebot() -> None:
                 int(paste_times.get()), enable_spam_interval.get(), res, basic
             )
 
-            # pylint: disable=inconsistent-return-statements
-            def on_press(key) -> False:
-                """See pynput documentation"""
-                if key == pynput.keyboard.Key.shift:
-                    spam.reset()
-                    return False
+            # def on_press(key) -> False:
+            #    """See pynput documentation"""
+            #    if key == pynput.keyboard.Key.shift:
+            #        spam.reset()
 
             def paste() -> None:
                 """Simulate LEFT_CONTROL + V"""
@@ -144,13 +146,14 @@ def autopastebot() -> None:
                     time.sleep(spam.interval)
                 # Since user can press shift to stop spamming
                 # we help him press shift after the spam ends
-                keyboard.press(pynput.keyboard.Key.shift)
-                keyboard.release(pynput.keyboard.Key.shift)
+                # keyboard.press(pynput.keyboard.Key.shift)
+                # keyboard.release(pynput.keyboard.Key.shift)
 
             paste_thread = threading.Thread(target=paste)
+            time.sleep(4)
             paste_thread.start()
-            with pynput.keyboard.Listener(on_press=on_press) as listener:
-                listener.join()
+            # with pynput.keyboard.Listener(on_press=on_press) as listener:
+            #    listener.join()
             paste_thread.join()
             res.sound_effect("finish")
             finished = tkinter.Label(basic, text="Spamming has finished.")
@@ -188,31 +191,28 @@ def autoclickbot() -> None:
         try:
             spam = utils.SpamBot(int(global_click_times.get()), False, res, basic)
 
-            # pylint: disable=inconsistent-return-statements
-            def on_press(key) -> None:
-                """pynput.keyboard.listener"""
-                try:
-                    if key == pynput.keyboard.Key.shift:
-                        spam.reset()
-                except AttributeError:
-                    print(key)
+            # def on_press(key) -> None:
+            #    """pynput.keyboard.listener"""
+            #    try:
+            #        if key == pynput.keyboard.Key.shift:
+            #            spam.reset()
+            #    except AttributeError:
+            #        print(key)
 
             def click() -> None:
                 """the function we use to spam clicks"""
-                print(0)
                 while not spam.finished():
-                    # mouse.click(pynput.mouse.Button.left, 1)
-                    print(1)
+                    mouse.click(pynput.mouse.Button.left, 1)
+                    print("Clicked")
                     spam.increase()
-                listener.stop()
+                # keyboard.press(pynput.keyboard.Key.shift)
+                # keyboard.release(pynput.keyboard.Key.shift)
 
-            def thread_start() -> None:
-                threading.Thread(target=click).start()
-
-            basic.after(4000, thread_start)
-            listener = pynput.keyboard.Listener(on_press=on_press)
-            listener.start()
-            listener.join()
+            # basic.after(4000, click)
+            time.sleep(4)
+            click()
+            # with pynput.keyboard.Listener(on_press=on_press) as listener:
+            #    listener.join()
             res.sound_effect("finish")
             finished = tkinter.Label(basic, text="Clicking has finished.")
             finished.place(x=250, y=270, anchor="center")

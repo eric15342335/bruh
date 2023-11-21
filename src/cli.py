@@ -69,8 +69,8 @@ while True:
 
                 paste_thread = threading.Thread(target=paste)
                 paste_thread.start()
-                with pynput.keyboard.Listener(on_press=on_press) as listener:
-                    listener.join()
+                #with pynput.keyboard.Listener(on_press=on_press) as listener:
+                #    listener.join()
                 paste_thread.join()
                 res.sound_effect("finish")
                 print("\nSpamming finished, returning to the main menu.")
