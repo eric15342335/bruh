@@ -4,7 +4,7 @@ import utils
 
 print(json.dumps(utils.versions, sort_keys=True, indent=4))
 
-filevers = ["1, 3, 3, 0"]
+filevers = ["1, 3, 4, 0"]
 filedesp = ["Spam Bot Command-Line Interface"]
 prodname = ["Spam Bot CLI"]
 prodver = [utils.getversion(utils.CLI)]

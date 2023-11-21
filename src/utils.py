@@ -15,7 +15,7 @@ BUFFER = 4096
 ENCODING = "utf-8"
 PING_MESSAGE = " Client PING"
 
-versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.5.7"}}
+versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.6.0"}}
 
 
 class Resources:

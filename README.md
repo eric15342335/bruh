@@ -45,18 +45,20 @@ If you want the executable output be one file, add the --onefile flag: <br>
 pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "src/metadata/cli.version" %Excludes% %Resources% %Icons% --onefile
 pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "src/metadata/gui.version" -w %Excludes% %Resources% %Icons% --onefile
 ```
+(Beta) PyInstaller Splash screen: <br>
+Add `--splash riva.ico` to the pyinstaller command <br>
+
 PyInstaller Documentation: [Here](https://pyinstaller.org/en/stable/usage.html)
 ## File structure
 ```
-.github             # Github actions for CodeQL analysis 
+.github/workflows   # Github actions for CodeQL analysis 
 get                 # Server lists for chatroom and version lists for checking updates 
 src                 # files crucial for running the program 
 src/metadata        # windows metadata for the program 
 src/res             # resources(images,audios) for the program 
 utils               # utilities for packaging the program 
 .gitignore          # gitignore 
-CHANGELOG.txt       # changelog 
-LICENSE.txt         # Apache License 
+LICENSE.txt         # License file
 README.md           # this file 
 requirements.txt    # dependencies 
 ```

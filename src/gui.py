@@ -46,12 +46,12 @@ def exit_program() -> None:
     exit_ui_button_n = tkinter.Button(
         exit_ui, text="No", command=exit_ui.destroy, bd=1.2
     )
-    exit_ui_button_n.place(height=30, width=50, x=200, y=50)
+    exit_ui_button_n.place(height=30, width=50, x=150, y=50)
 
-    exit_ui.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 400, 100, False))
+    exit_ui.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 250, 100, False))
     exit_ui.iconbitmap(res.abspath("res/riva.ico"))
-    exit_ui.focus_force()
     exit_ui.resizable(False, False)
+    exit_ui.focus_force()
     exit_ui.mainloop()
 
 
@@ -60,7 +60,7 @@ def aboutpage() -> None:
     about_page = tkinter.Toplevel(basic)
     about_page.title("About")
 
-    about_page.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 390, 190, False))
+    about_page.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 350, 190, False))
     about_page.iconbitmap(res.abspath("res/riva.ico"))
     about_page.focus_force()
     about_page.resizable(False, False)
@@ -71,7 +71,7 @@ def aboutpage() -> None:
     version_text.place(x=130, y=0)
 
     version_info = tkinter.Label(
-        about_page, font=("Consolas", 9), text=f"version: {VERSION}", relief="flat"
+        about_page, font=("TkDefaultFont", 11), text=f"Version: {VERSION}", relief="flat"
     )
     version_info.place(x=125, y=46)
     about_page.update_idletasks()
@@ -85,13 +85,9 @@ def aboutpage() -> None:
     bbk_display.place(height=140, width=80, x=30, y=20)
 
     copyright_info = tkinter.Label(
-        about_page, font=("TkDefaultFont", 10), text="Copyright (c) 2020 eric15342335."
+        about_page, font=("TkDefaultFont", 11), text="Copyright (c) \n2020-2023 eric15342335."
     )
     copyright_info.place(x=125, y=70)
-    copyright_info2 = tkinter.Label(
-        about_page, font=("TkDefaultFont", 10), text="All Rights Reversed."
-    )
-    copyright_info2.place(x=125, y=95)
 
     github_page = tkinter.Label(about_page, text="Github Repository", bg="#00ffee")
     github_page.bind(
@@ -109,7 +105,7 @@ def aboutpage() -> None:
             "https://www.youtube.com/watch?v=dQw4w9WgXcQ", new=0, autoraise=True
         ),
     )
-    dont_click.place(x=260, y=120)
+    dont_click.place(x=240, y=120)
 
     about_ok_button = tkinter.Button(
         about_page, text="Close", command=about_page.destroy, bd=2.3
@@ -182,7 +178,7 @@ def autopastebot() -> None:
         confirm_spam.destroy()
         button1.configure(text="Paste-Enter Bot", command=autopastebot)
 
-    button1.configure(text="Paste-Enter Bot", command=hide_inputs)
+    button1.configure(text="Paste-Enter Bot (O)", command=hide_inputs)
 
 
 def autoclickbot() -> None:
@@ -243,7 +239,7 @@ def autoclickbot() -> None:
         confirm_click.destroy()
         button2.configure(text="Click Bot", command=autoclickbot)
 
-    button2.configure(text="Click Bot", command=hide_inputs2)
+    button2.configure(text="Click Bot (O)", command=hide_inputs2)
 
 
 def clipboard_check() -> None:
@@ -574,23 +570,23 @@ def keylogger() -> None:
     keylog_window.mainloop()
 
 
-print(f"Spam Bot GUI v{VERSION}")
+print(f"Spam Bot GUI v{VERSION} by eric15342335 (c) 2020-2023")
 basic = tkinter.Tk()
 basic.title("Spam Bot GUI")
 
 height = basic.winfo_screenheight()
 width = basic.winfo_screenwidth()
 
-welcome_version = tkinter.Label(basic, text=VERSION)
+welcome_version = tkinter.Label(basic, font=("TkDefaultFont", 10), text=VERSION)
 welcome_version.place(rely=1.0, relx=1.0, x=0, y=0, anchor=tkinter.SE)
 welcome_msg = tkinter.Label(
-    basic, font=("TkDefaultFont", 10), text="Welcome to Spam Bot GUI !"
+    basic, font=("Calibri", 14), text="Welcome to Spam Bot GUI !!"
 )
 welcome_msg.place(x=20, y=30)
 
 neko_vanilla = ImageTk.PhotoImage(Image.open(res.abspath("res/vanilla.png")))
 neko_vanilla_display = tkinter.Label(basic, image=neko_vanilla)
-neko_vanilla_display.place(x=235, y=15)
+neko_vanilla_display.place(x=300, y=15)
 
 cat_noob = ImageTk.PhotoImage(Image.open(res.abspath("res/cat.png")))
 cat_noob_background = tkinter.Label(basic, image=cat_noob)
