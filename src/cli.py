@@ -55,12 +55,7 @@ while True:
                     """Simulate LEFT_CONTROL + V"""
                     while not spam.finished():
                         spam.increase()
-                        keyboard.press(pynput.keyboard.Key.ctrl_l)
-                        keyboard.press("v")
-                        keyboard.release(pynput.keyboard.Key.ctrl_l)
-                        keyboard.release("v")
-                        keyboard.press(pynput.keyboard.Key.enter)
-                        keyboard.release(pynput.keyboard.Key.enter)
+                        keyboard.pressed(pynput.keyboard.Key.ctrl_l, "v", pynput.keyboard.Key.enter)
                         time.sleep(spam.interval)
                     # Since user can press shift to stop spamming
                     # we help him press shift after the spam ends
@@ -69,7 +64,7 @@ while True:
 
                 paste_thread = threading.Thread(target=paste)
                 paste_thread.start()
-                #with pynput.keyboard.Listener(on_press=on_press) as listener:
+                # with pynput.keyboard.Listener(on_press=on_press) as listener:
                 #    listener.join()
                 paste_thread.join()
                 res.sound_effect("finish")
@@ -177,9 +172,7 @@ while True:
                             s.close()
                         else:
                             s.send(
-                                f"{utils.return_time()}[{username}]{message}".encode(
-                                    utils.ENCODING
-                                )
+                                f"{utils.return_time()}[{username}]{message}".encode(utils.ENCODING)
                             )
                             res.sound_effect("send")
 
@@ -197,12 +190,8 @@ while True:
                             utils.ENCODING
                         )
                     )
-                    print(
-                        "\nEnter your message below and press enter to send the message."
-                    )
-                    print(
-                        "Type '/clients' to show the existing connections on the server,"
-                    )
+                    print("\nEnter your message below and press enter to send the message.")
+                    print("Type '/clients' to show the existing connections on the server,")
                     print("type '/exit' to return to the main menu.")
                     send()
                 except socket.error as error:
@@ -300,7 +289,7 @@ while True:
         # log(f"Server name is set to {server_name}", True)
         # log(f"Maximum connections = {CAPACITY}", True)
         # log("Server is up!", True)
-        USERNAME = "[Bot]"
+        USERNAME = f"[Server <{VERSION}>]"
         client_list = []
         exist_conn_address = []
 
@@ -312,7 +301,9 @@ while True:
                 try:
                     conn, address = s.accept()
                     single_quote = "'"
-                    client_address = f"[{str(address[0]).strip(single_quote)}:{str(address[1]).strip()}]"
+                    client_address = (
+                        f"[{str(address[0]).strip(single_quote)}:{str(address[1]).strip()}]"
+                    )
                     client_list.append(conn)
                     exist_conn_address.append(address)
                     # log(f"New connection from {client_address}", True)
@@ -331,30 +322,22 @@ while True:
                             if utils.PING_MESSAGE in received_decoded:
                                 conn.send(
                                     f"{IP_address}{utils.return_time()}"
-                                    f"{USERNAME} Welcome to {server_name}!".encode(
-                                        utils.ENCODING
-                                    )
+                                    f"{USERNAME} Welcome to {server_name}!".encode(utils.ENCODING)
                                 )
                                 # log(f"{IP_address}{utils.return_time()}" f"{USERNAME} Welcome to {server_name}
                                 # server!")
                                 conn.send(
                                     f"{IP_address}{utils.return_time()}"
-                                    f"{USERNAME} Server version {VERSION}".encode(
-                                        utils.ENCODING
-                                    )
+                                    f"{USERNAME} Server version {VERSION}".encode(utils.ENCODING)
                                 )
                                 # log(f"{IP_address}{utils.return_time()}{USERNAME} Server is "
                                 #    f"running the version {VERSION}")
                             elif "/clients" in received_decoded:
                                 conn.send(
                                     f"{IP_address}{utils.return_time()}"
-                                    f"{USERNAME}Existing Connections List:".encode(
-                                        utils.ENCODING
-                                    )
+                                    f"{USERNAME}Existing Connections List:".encode(utils.ENCODING)
                                 )
-                                for index, user_address in enumerate(
-                                    exist_conn_address
-                                ):
+                                for index, user_address in enumerate(exist_conn_address):
                                     request2 = (
                                         f"{IP_address}{utils.return_time()}"
                                         f"{USERNAME} {index}) {user_address}"
@@ -398,9 +381,7 @@ while True:
                     # send the message to nth client in the list
                     client_list[n].send(message.encode(utils.ENCODING))
                     n += 1  # next client
-                except (
-                    socket.error
-                ):  # usually because client was disconnected at that moment
+                except socket.error:  # usually because client was disconnected at that moment
                     client_n = client_list[n]  # store the socket object for close()
                     client_list.remove(client_n)
                     address_n = exist_conn_address[
@@ -444,14 +425,10 @@ while True:
                                 client_address = exist_conn_address[which_connection]
                                 exist_conn_address.remove(client_address)
                                 client_conn.send(
-                                    "You have been kicked from the server.".encode(
-                                        utils.ENCODING
-                                    )
+                                    "You have been kicked from the server.".encode(utils.ENCODING)
                                 )
                                 client_conn.close()
-                                broadcast(
-                                    f"{client_address} has been kicked by the server."
-                                )
+                                broadcast(f"{client_address} has been kicked by the server.")
                                 break
                             except IndexError:  # t
                                 print("Invalid value, please enter again!")
@@ -461,8 +438,7 @@ while True:
                             print("Invalid value, please enter again!")
                 elif message == "/close":
                     broadcast(
-                        f"{utils.return_time()}"
-                        f"[Server Broadcast]Server shutdown in 10 seconds."
+                        f"{utils.return_time()}" f"[Server Broadcast]Server shutdown in 10 seconds."
                     )
                     # log("Server shutdown in 10 seconds. (/close)", True)
                     for countdown in range(10, 0, -1):
@@ -508,9 +484,7 @@ while True:
                 for imp in list(newest_version):
                     print(f'{imp}: {newest_version[imp]["version"]}')
                 if newest_version["CLI"]["version"] != VERSION:
-                    print(
-                        f"\nNew version {newest_version['CLI']['version']} is available!"
-                    )
+                    print(f"\nNew version {newest_version['CLI']['version']} is available!")
                 else:
                     print("\nProgram is up-to-date!")
         except OSError as network_error:
