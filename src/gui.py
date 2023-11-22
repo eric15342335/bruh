@@ -43,10 +43,10 @@ def exit_program() -> None:
     exit_ui_text = tkinter.Label(exit_ui, text="Do you want to exit the program?")
     exit_ui_text.place(x=30, y=10)
 
-    exit_ui_button_y = tkinter.Button(exit_ui, text="Yes", command=basic.destroy, bd=1.2)
+    exit_ui_button_y = tkinter.Button(exit_ui, text="Yes", command=basic.destroy, bd=1.2, cursor="hand2")
     exit_ui_button_y.place(height=30, width=50, x=50, y=50)
 
-    exit_ui_button_n = tkinter.Button(exit_ui, text="No", command=exit_ui.destroy, bd=1.2)
+    exit_ui_button_n = tkinter.Button(exit_ui, text="No", command=exit_ui.destroy, bd=1.2, cursor="hand2")
     exit_ui_button_n.place(height=30, width=50, x=150, y=50)
 
     exit_ui.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 250, 100, False))
@@ -90,7 +90,7 @@ def aboutpage() -> None:
         font=("TkDefaultFont", 13),
         text="Copyright (c) 2023 eric15342335",
         justify="center",
-        width=195,
+        width=195
     )
     copyright_info.place(x=125, y=70)
 
@@ -110,7 +110,7 @@ def aboutpage() -> None:
     )
     dont_click.place(x=240, y=120)
 
-    about_ok_button = tkinter.Button(about_page, text="Close", command=about_page.destroy, bd=2.3)
+    about_ok_button = tkinter.Button(about_page, text="Close", command=about_page.destroy, bd=2.3, cursor="hand2")
     about_ok_button.place(height=30, width=65, x=390 / 2 - 65 / 2, y=155)
 
     about_page.mainloop()
@@ -159,7 +159,7 @@ def autopastebot() -> None:
     paste_times = tkinter.Entry(basic, bd=4)
     paste_times.place(width=170, x=120, y=140)
 
-    confirm_spam = tkinter.Button(basic, text="Start", command=main)
+    confirm_spam = tkinter.Button(basic, text="Start", command=main, cursor="hand2")
     confirm_spam.place(height=50, width=100, x=200, y=200)
 
     def hide_inputs() -> None:
@@ -167,9 +167,9 @@ def autopastebot() -> None:
         paste_times_text.destroy()
         paste_times.destroy()
         confirm_spam.destroy()
-        button1.configure(text="Paste-Enter Bot", command=autopastebot)
+        button1.configure(text="Paste-Enter Bot", command=autopastebot, cursor="hand2")
 
-    button1.configure(text="Paste-Enter Bot (O)", command=hide_inputs)
+    button1.configure(text="Paste-Enter Bot (O)", command=hide_inputs, cursor="hand2")
 
 
 def autoclickbot() -> None:
@@ -215,7 +215,7 @@ def autoclickbot() -> None:
     global_click_times = tkinter.Entry(basic, bd=4)
     global_click_times.place(width=170, x=120, y=140)
 
-    confirm_click = tkinter.Button(basic, text="Start", command=click_process)
+    confirm_click = tkinter.Button(basic, text="Start", command=click_process, cursor="hand2")
     confirm_click.place(height=50, width=100, x=200, y=200)
 
     def hide_inputs2() -> None:
@@ -258,7 +258,7 @@ def clipboard_check() -> None:
     clipboard_list_scrollbar.config(command=clipboard_list.yview)
     clipboard_list_x_scrollbar.config(command=clipboard_list.xview)
 
-    cb_exit = tkinter.Button(clipboard_display, text="ok", command=clipboard_display.destroy, bd=2)
+    cb_exit = tkinter.Button(clipboard_display, text="ok", command=clipboard_display.destroy, bd=2, cursor="hand2")
     cb_exit.place(height=40, width=80, x=10, y=10)
 
     cb_len = tkinter.Label(clipboard_display, text=f"Clipboard length: {len(text)}")
@@ -407,7 +407,7 @@ def clipboard_check() -> None:
                 message_sent = tkinter.Entry(clipboard_display, bd=3)
                 message_sent.place(width=540, x=10, y=450)
                 send_message_button = tkinter.Button(
-                    clipboard_display, text="Connect", command=connect_initialize
+                    clipboard_display, text="Connect", command=connect_initialize, cursor="hand2"
                 )
                 send_message_button.place(height=28, width=70, x=560, y=450)
 
@@ -426,7 +426,7 @@ def clipboard_check() -> None:
             clipboard_display.update_idletasks()
 
     cb_exp_msg_button = tkinter.Button(
-        clipboard_display, text="Experimental Chatroom", command=cb_experimental_msg
+        clipboard_display, text="Experimental Chatroom", command=cb_experimental_msg, cursor="hand2"
     )
     cb_exp_msg_button.place(height=40, width=210, x=410, y=10)
 
@@ -537,13 +537,13 @@ cat_noob = ImageTk.PhotoImage(Image.open(res.abspath("res/cat.png")))
 cat_noob_background = tkinter.Label(basic, image=cat_noob)
 cat_noob_background.place(rely=1.0, relx=1.0, x=0, y=-25, anchor=tkinter.SE)
 
-button1 = tkinter.Button(basic, text="Paste-Enter Bot", command=autopastebot)
+button1 = tkinter.Button(basic, text="Paste-Enter Bot", command=autopastebot, cursor="hand2")
 button1.place(height=40, width=120, x=20, y=70)
 
-button2 = tkinter.Button(basic, text="Click Bot", command=autoclickbot)
+button2 = tkinter.Button(basic, text="Click Bot", command=autoclickbot, cursor="hand2")
 button2.place(height=40, width=100, x=150, y=70)
 
-button3 = tkinter.Button(basic, text="Clipboard / Chatroom", command=clipboard_check)
+button3 = tkinter.Button(basic, text="Clipboard / Chatroom", command=clipboard_check, cursor="hand2")
 button3.place(height=40, width=160, x=320, y=70)
 
 
