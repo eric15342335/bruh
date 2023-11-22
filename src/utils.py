@@ -3,7 +3,6 @@ Functions that shares between cli/gui scripts
 """
 # -*- coding:utf-8 -*-
 import os
-import sys
 import time
 import tkinter
 
@@ -17,16 +16,25 @@ PING_MESSAGE = " Client PING"
 
 versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.6.1"}}
 
+sounds = {
+    "send": "send_msg.wav",
+    "receive": "receive_msg.wav",
+    "finish": "finish.wav",
+    "notice": "asterisk.wav",
+}
+
 
 class Resources:
     """Accessing files"""
 
     def __init__(self, _script: [0, 1]) -> None:
-        self.base_path = getattr(
-            sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))
-        )
+        # self.base_path = getattr(
+        #    sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__))
+        # )
+        # Starting from PyInstaller 4.3, sys._MEIPASS is superseded by __file__
+        self.base_path = os.path.dirname(os.path.abspath(__file__))
         self.sound_enable = True
-        if _script == 0:    # cli only need .wav file
+        if _script == 0:  # cli only need .wav file
             self._initialize(".wav")
         elif _script == 1:  # gui need to preload all files
             self._initialize()
@@ -46,25 +54,17 @@ class Resources:
     def sound_effect(self, which: str) -> None:
         """Provide a handy function to play sounds"""
         if self.sound_enable:
-            sounds = {
-                "send": "send_msg.wav",
-                "receive": "receive_msg.wav",
-                "finish": "finish.wav",
-                "notice": "asterisk.wav",
-            }
             winsound.PlaySound(self.abspath("res", sounds[which]), winsound.SND_ASYNC)
 
 
-def return_time(file: bool = True) -> str:
+def return_time(file: bool = False) -> str:
     """Return the current time [12:12:12]"""
-    _sp = "-" if file else ":"
+    _sp = "-" if file else ":"  # separator as windows does not allow ":" in file name
     now_time = time.strftime(f"%H{_sp}%M{_sp}%S", time.localtime())
     return "[%s]" % now_time
 
 
-def centre_coordinate(
-        root: tkinter.Tk, width: int, height: int, is_base: bool = True
-) -> tuple:
+def centre_coordinate(root: tkinter.Tk, width: int, height: int, is_base: bool = True) -> tuple:
     if is_base:
         root_width, root_height = root.winfo_screenwidth(), root.winfo_screenheight()
         return (
@@ -77,7 +77,7 @@ def centre_coordinate(
     base_width = root.winfo_width()
     base_height = root.winfo_height()
     height_coord = (
-            root.winfo_rooty() + (base_height - height) / 2 - 20
+        root.winfo_rooty() + (base_height - height) / 2 - 20
     )  # -20: modifier of the [-] [X] space
     width_coord = root.winfo_rootx() + (base_width - width) / 2
     print(width, height, int(width_coord), int(height_coord))
@@ -89,11 +89,9 @@ class SpamBot:
 
     alert_text = "You now have 4 seconds to prepare. you can press shift to stop."
 
-    def __init__(
-            self, times: int, interval: bool, res: Resources, root: tkinter.Tk = None
-    ) -> None:
+    def __init__(self, times: int, interval: bool, res: Resources, root: tkinter.Tk = None) -> None:
         """parse variables to SpamBot class"""
-        #winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
+        # use for debugging: winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
         self.times = times
         if interval:
             self.interval = 0.5
@@ -124,7 +122,7 @@ class SpamBot:
         )
         notific_button.place(height=30, width=90, anchor="center", x=175, y=75)
 
-        winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
+        winsound.PlaySound("res/finish.wav", winsound.SND_ASYNC)
 
         notification.mainloop()
         notification.destroy()
