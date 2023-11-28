@@ -22,6 +22,7 @@ Issue: Keyboard listener is not working properly in GUI,
 but it works fine in CLI.
 Current Solution: Temporarily comment out the keyboard listener code in GUI.
 """
+# PyInstaller GUI splash screen
 try:
     import pyi_splash
 
@@ -379,7 +380,7 @@ def clipboard_check() -> None:
                                         clipboard_list.yview(tkinter.END)
                                         clipboard_list.insert(tkinter.END, str(sending_error))
                                         for line_send_error in list(
-                                            traceback.format_exc().split("\n")
+                                                traceback.format_exc().split("\n")
                                         ):
                                             clipboard_list.insert(
                                                 clipboard_list.size() + 1,

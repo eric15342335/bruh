@@ -9,14 +9,15 @@ Initially created just for fun, this is my first attempt to create a usable GUI 
 ## Installing
 First, create a virtual environment: <br>
 ```commandline
+pip install -U virtualenv
 virtualenv venv --clear
-venv\scripts\activate.bat
+venv\scripts\activate
 ```
 Install the dependencies: <br>
 ```commandline
 pip install -U -r requirements.txt
 ```
-If you want to package the app, install pyinstaller: <br>
+(Optional) If you want to package the app, install pyinstaller: <br>
 ```commandline
 pip install pyinstaller      
 ```
