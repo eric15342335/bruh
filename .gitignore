@@ -1,5 +1,5 @@
 # PyCharm Configuration Files
-.idea
+.idea/
 
 # Compiled Python Bytecode
 **/__pycache__
@@ -10,16 +10,5 @@ dist
 *.spec
 pyinstaller*
 
-# Cython
-Cython*
-*.pyd
-src/build
-
-# Compiled object files
-*.c
-*.o
-*.obj
+# Executable created by Inno Setup
 *.exe
-
-# UPX
-upx.exe
