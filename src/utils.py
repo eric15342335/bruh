@@ -1,20 +1,24 @@
 """
-Functions that shares between cli/gui scripts
+utils.py stores functions that both cli/gui scripts use
 """
-# -*- coding:utf-8 -*-
+import json
 import os
 import time
 import tkinter
 
 import winsound
+import pynput
 
-UPDATE_URL = "https://raw.githubusercontent.com/eric15342335/bruh/main/get/version.json"
-SERVER_URL = "https://raw.githubusercontent.com/eric15342335/bruh/main/get/server.json"
+
+UPDATE_URL = (
+    "https://raw.githubusercontent.com/eric15342335/bruh/main/src/get/version.json"
+)
+SERVER_URL = (
+    "https://raw.githubusercontent.com/eric15342335/bruh/main/src/get/server.json"
+)
 BUFFER = 4096
 ENCODING = "utf-8"
 PING_MESSAGE = " Client PING"
-
-versions = {"CLI": {"version": "1.3.4"}, "GUI": {"version": "0.6.3"}}
 
 sounds = {
     "send": "send_msg.wav",
@@ -25,7 +29,10 @@ sounds = {
 
 
 class Resources:
-    """Accessing files"""
+    """
+    Accessing files
+    Todo: remove this class, this is the biggest mistake ever made to make things complicated
+    """
 
     def __init__(self, _script: [0, 1]) -> None:
         # self.base_path = getattr(
@@ -34,22 +41,24 @@ class Resources:
         # Starting from PyInstaller 4.3, sys._MEIPASS is superseded by __file__
         self.base_path = os.path.dirname(os.path.abspath(__file__))
         self.sound_enable = True
-        if _script == 0:  # cli only need .wav file
-            self._initialize(".wav")
-        elif _script == 1:  # gui need to preload all files
-            self._initialize()
+        if __name__ != "__main__":
+            # this script needs to use functions under resources,
+            # but we don't want to initialize the files yet
+            if _script == 0:  # cli only need .wav file
+                self._initialize(".wav")
+            elif _script == 1:  # gui need to preload all files
+                self._initialize()
 
     def _initialize(self, ends: str = "") -> None:
         """Read all files under the "res" folder"""
-        for entry in os.scandir(self.abspath("res")).__iter__():
+        for entry in iter(os.scandir(self.abspath("res"))):
             if entry.is_file() and entry.name.endswith(ends):
                 with open(file=entry.path, mode="br") as file:
                     file.read()
-                    # todo: should we catch FileNotFoundError?
 
     def abspath(self, *relative_path: str) -> str:
         """Return the absolute path"""
-        return os.path.join(self.base_path, *relative_path)
+        return str(os.path.join(self.base_path, *relative_path))
 
     def sound_effect(self, which: str) -> None:
         """Provide a handy function to play sounds"""
@@ -57,14 +66,31 @@ class Resources:
             winsound.PlaySound(self.abspath("res", sounds[which]), winsound.SND_ASYNC)
 
 
+# Load versioning number from src/get/version.json
+_res = Resources(0)
+with open(_res.abspath("get/version.json"), encoding=ENCODING) as version_file:
+    versions = json.load(version_file)
+
+
 def return_time(file: bool = False) -> str:
     """Return the current time [12:12:12]"""
     _sp = "-" if file else ":"  # separator as windows does not allow ":" in file name
     now_time = time.strftime(f"%H{_sp}%M{_sp}%S", time.localtime())
-    return "[%s]" % now_time
+    return f"[{now_time}]"
 
 
-def centre_coordinate(root: tkinter.Tk, width: int, height: int, is_base: bool = True) -> tuple:
+def centre_coordinate(
+    root: tkinter.Tk, width: int, height: int, is_base: bool = True
+) -> tuple:
+    """
+    centre_coordinate() is a very useful function that
+    given:
+        what we want the size of the window (tkinter.Toplevel) to be
+    returns:
+        where the window should be on the screen,
+        so that it looks like centered on the screen
+    it involves basic mid-point calculations
+    """
     if is_base:
         root_width, root_height = root.winfo_screenwidth(), root.winfo_screenheight()
         return (
@@ -84,12 +110,22 @@ def centre_coordinate(root: tkinter.Tk, width: int, height: int, is_base: bool =
     return width, height, int(width_coord), int(height_coord)
 
 
+def tk_geo_f(arrangement: tuple) -> str:
+    """
+    tkinter geometry parameter formatting
+    for tkinter.Toplevel.geometry(xxxxxxx)
+    """
+    return str(arrangement[0]) + "x" + "+".join(map(str, arrangement[1:]))
+
+
 class SpamBot:
     """Encapsulate variables into a class to prevent global variable warnings"""
 
     alert_text = "You now have 4 seconds to prepare. you can press shift to stop."
 
-    def __init__(self, times: int, interval: bool, res: Resources, root: tkinter.Tk = None) -> None:
+    def __init__(
+        self, times: int, interval: bool, res: Resources, root: tkinter.Tk = None
+    ) -> None:
         """parse variables to SpamBot class"""
         # use for debugging: winsound.PlaySound(("res/finish.wav"), winsound.SND_ASYNC)
         self.times = times
@@ -109,7 +145,7 @@ class SpamBot:
         notification.title("Spam Bot Ready")
         notification.attributes("-topmost", True)
 
-        notification.geometry("%sx%s+%s+%s" % centre_coordinate(self.root, 350, 100))
+        notification.geometry(tk_geo_f(centre_coordinate(self.root, 350, 100)))
         notification.resizable(False, False)
         notification.iconbitmap(res.abspath("res/riva.ico"))
         notification.focus_force()
@@ -130,6 +166,7 @@ class SpamBot:
     def increase(self, times: int = 1) -> None:
         """record number of times of clicks/paste"""
         self.times_spammed += times
+        print(self.times_spammed)
 
     def reset(self) -> None:
         """Reset the variables"""
@@ -140,4 +177,14 @@ class SpamBot:
         return self.times_spammed > self.times
 
 
-# SpamBot(1, True, Resources(GUI))
+def paste(spam: SpamBot, keyboard: pynput.keyboard.Controller, gui: bool) -> None:
+    """Simulate LEFT_CONTROL + V"""
+    while not spam.finished():
+        spam.increase()
+        keyboard.pressed(pynput.keyboard.Key.ctrl_l, "v", pynput.keyboard.Key.enter)
+        time.sleep(spam.interval)
+        # Since user can press shift to stop spamming
+        # we help him press shift after the spam ends
+        if not gui:
+            # todo: investigate why this don't work on gui
+            keyboard.pressed(pynput.keyboard.Key.shift, pynput.keyboard.Key.shift)
