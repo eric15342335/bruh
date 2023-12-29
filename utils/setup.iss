@@ -1,6 +1,6 @@
 [Setup]
 AppName=spambotgui
-AppVersion=0.6.3
+AppVersion=0.7.0
 WizardStyle=modern
 DefaultDirName={autodesktop}\spambotgui
 DefaultGroupName=Spam Bot Graphical-User Interface

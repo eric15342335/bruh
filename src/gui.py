@@ -17,11 +17,10 @@ from PIL import ImageTk, Image
 
 import utils
 
-"""
-Issue: Keyboard listener is not working properly in GUI,
-but it works fine in CLI.
-Current Solution: Temporarily comment out the keyboard listener code in GUI.
-"""
+# Issue: Keyboard listener is not working properly in GUI,
+# but it works fine in CLI.
+# Current Solution: Temporarily comment out the keyboard listener code in GUI.
+
 # PyInstaller GUI splash screen
 try:
     import pyi_splash
@@ -44,13 +43,17 @@ def exit_program() -> None:
     exit_ui_text = tkinter.Label(exit_ui, text="Do you want to exit the program?")
     exit_ui_text.place(x=30, y=10)
 
-    exit_ui_button_y = tkinter.Button(exit_ui, text="Yes", command=basic.destroy, bd=1.2, cursor="hand2")
+    exit_ui_button_y = tkinter.Button(
+        exit_ui, text="Yes", command=basic.destroy, bd=1.2, cursor="hand2"
+    )
     exit_ui_button_y.place(height=30, width=50, x=50, y=50)
 
-    exit_ui_button_n = tkinter.Button(exit_ui, text="No", command=exit_ui.destroy, bd=1.2, cursor="hand2")
+    exit_ui_button_n = tkinter.Button(
+        exit_ui, text="No", command=exit_ui.destroy, bd=1.2, cursor="hand2"
+    )
     exit_ui_button_n.place(height=30, width=50, x=150, y=50)
 
-    exit_ui.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 250, 100, False))
+    exit_ui.geometry(utils.tk_geo_f(utils.centre_coordinate(basic, 250, 100, False)))
     exit_ui.iconbitmap(res.abspath("res/riva.ico"))
     exit_ui.resizable(False, False)
     exit_ui.focus_force()
@@ -62,7 +65,7 @@ def aboutpage() -> None:
     about_page = tkinter.Toplevel(basic)
     about_page.title("About")
 
-    about_page.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 350, 190, False))
+    about_page.geometry(utils.tk_geo_f(utils.centre_coordinate(basic, 350, 190, False)))
     about_page.iconbitmap(res.abspath("res/riva.ico"))
     about_page.focus_force()
     about_page.resizable(False, False)
@@ -73,7 +76,10 @@ def aboutpage() -> None:
     version_text.place(x=130, y=0)
 
     version_info = tkinter.Label(
-        about_page, font=("TkDefaultFont", 11), text=f"Version: {VERSION}", relief="flat"
+        about_page,
+        font=("TkDefaultFont", 11),
+        text=f"Version: {VERSION}",
+        relief="flat",
     )
     version_info.place(x=125, y=46)
     about_page.update_idletasks()
@@ -91,18 +97,24 @@ def aboutpage() -> None:
         font=("TkDefaultFont", 13),
         text="Copyright (c) 2023 eric15342335",
         justify="center",
-        width=195
+        width=195,
     )
     copyright_info.place(x=125, y=70)
 
-    github_page = tkinter.Label(about_page, text="Github Repository", bg="#00ffee", cursor="hand2")
+    github_page = tkinter.Label(
+        about_page, text="Github Repository", bg="#00ffee", cursor="hand2"
+    )
     github_page.bind(
         "<Button-1>",
-        lambda e: webbrowser.open("https://github.com/eric15342335/bruh", new=0, autoraise=True),
+        lambda e: webbrowser.open(
+            "https://github.com/eric15342335/bruh", new=0, autoraise=True
+        ),
     )
     github_page.place(x=125, y=120)
 
-    dont_click = tkinter.Label(about_page, text="Don't Click Me ", bg="#ffcc00", cursor="hand2")
+    dont_click = tkinter.Label(
+        about_page, text="Don't Click Me ", bg="#ffcc00", cursor="hand2"
+    )
     dont_click.bind(
         "<Button-1>",
         lambda e: webbrowser.open(
@@ -111,7 +123,9 @@ def aboutpage() -> None:
     )
     dont_click.place(x=240, y=120)
 
-    about_ok_button = tkinter.Button(about_page, text="Close", command=about_page.destroy, bd=2.3, cursor="hand2")
+    about_ok_button = tkinter.Button(
+        about_page, text="Close", command=about_page.destroy, bd=2.3, cursor="hand2"
+    )
     about_ok_button.place(height=30, width=65, x=390 / 2 - 65 / 2, y=155)
 
     about_page.mainloop()
@@ -122,25 +136,18 @@ def autopastebot() -> None:
 
     def main() -> None:
         try:
-            spam = utils.SpamBot(int(paste_times.get()), enable_spam_interval.get(), res, basic)
+            spam = utils.SpamBot(
+                int(paste_times.get()), enable_spam_interval.get(), res, basic
+            )
 
             # def on_press(key) -> False:
             #    """See pynput documentation"""
             #    if key == pynput.keyboard.Key.shift:
             #        spam.reset()
 
-            def paste() -> None:
-                """Simulate LEFT_CONTROL + V"""
-                while not spam.finished():
-                    spam.increase()
-                    keyboard.pressed(pynput.keyboard.Key.ctrl_l, "v", pynput.keyboard.Key.enter)
-                    time.sleep(spam.interval)
-                # Since user can press shift to stop spamming
-                # we help him press shift after the spam ends
-                # keyboard.press(pynput.keyboard.Key.shift)
-                # keyboard.release(pynput.keyboard.Key.shift)
-
-            paste_thread = threading.Thread(target=paste)
+            paste_thread = threading.Thread(
+                target=utils.paste, args=(spam, keyboard, True)
+            )
             time.sleep(4)
             paste_thread.start()
             # with pynput.keyboard.Listener(on_press=on_press) as listener:
@@ -151,7 +158,9 @@ def autopastebot() -> None:
             finished.place(x=250, y=270, anchor="center")
             basic.after(3 * 1000, finished.destroy)
         except ValueError:
-            value_error = tkinter.Label(basic, text="You have entered an invalid value.")
+            value_error = tkinter.Label(
+                basic, text="You have entered an invalid value."
+            )
             value_error.place(x=250, y=270, anchor="center")
             basic.after(3 * 1000, value_error.destroy)
 
@@ -194,8 +203,8 @@ def autoclickbot() -> None:
                     mouse.click(pynput.mouse.Button.left, 1)
                     print("Clicked")
                     spam.increase()
-                # keyboard.press(pynput.keyboard.Key.shift)
-                # keyboard.release(pynput.keyboard.Key.shift)
+                    # keyboard.press(pynput.keyboard.Key.shift)
+                    # keyboard.release(pynput.keyboard.Key.shift)
 
             # basic.after(4000, click)
             time.sleep(4)
@@ -207,7 +216,9 @@ def autoclickbot() -> None:
             finished.place(x=250, y=270, anchor="center")
             basic.after(3 * 1000, finished.destroy)
         except ValueError:
-            value_error = tkinter.Label(basic, text="You have entered an invalid value.")
+            value_error = tkinter.Label(
+                basic, text="You have entered an invalid value."
+            )
             value_error.place(x=250, y=270, anchor="center")
             basic.after(3 * 1000, value_error.destroy)
 
@@ -216,7 +227,9 @@ def autoclickbot() -> None:
     global_click_times = tkinter.Entry(basic, bd=4)
     global_click_times.place(width=170, x=120, y=140)
 
-    confirm_click = tkinter.Button(basic, text="Start", command=click_process, cursor="hand2")
+    confirm_click = tkinter.Button(
+        basic, text="Start", command=click_process, cursor="hand2"
+    )
     confirm_click.place(height=50, width=100, x=200, y=200)
 
     def hide_inputs2() -> None:
@@ -234,7 +247,9 @@ def clipboard_check() -> None:
     clipboard_display = tkinter.Toplevel(basic)
     clipboard_display.title("Clipboard")
 
-    clipboard_display.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 640, 500, False))
+    clipboard_display.geometry(
+        utils.tk_geo_f(utils.centre_coordinate(basic, 640, 500, False))
+    )
     clipboard_display.iconbitmap(res.abspath("res/riva.ico"))
     clipboard_display.focus_force()
     clipboard_display.resizable(False, False)
@@ -244,7 +259,9 @@ def clipboard_check() -> None:
     clipboard_list_scrollbar = tkinter.Scrollbar(clipboard_display, bd=10)
     clipboard_list_scrollbar.place(height=350, width=20, x=600, y=60)
 
-    clipboard_list_x_scrollbar = tkinter.Scrollbar(clipboard_display, bd=10, orient="horizontal")
+    clipboard_list_x_scrollbar = tkinter.Scrollbar(
+        clipboard_display, bd=10, orient="horizontal"
+    )
     clipboard_list_x_scrollbar.place(height=20, width=580, x=10, y=420)
 
     clipboard_list = tkinter.Listbox(
@@ -259,14 +276,23 @@ def clipboard_check() -> None:
     clipboard_list_scrollbar.config(command=clipboard_list.yview)
     clipboard_list_x_scrollbar.config(command=clipboard_list.xview)
 
-    cb_exit = tkinter.Button(clipboard_display, text="ok", command=clipboard_display.destroy, bd=2, cursor="hand2")
+    cb_exit = tkinter.Button(
+        clipboard_display,
+        text="ok",
+        command=clipboard_display.destroy,
+        bd=2,
+        cursor="hand2",
+    )
     cb_exit.place(height=40, width=80, x=10, y=10)
 
     cb_len = tkinter.Label(clipboard_display, text=f"Clipboard length: {len(text)}")
     cb_len.place(x=95, y=10)
 
     def cb_experimental_msg() -> None:
-        """Experimental Tkinter interface for chatroom, currently sticked to clipboard_display window"""
+        """
+        Experimental Tkinter interface for chatroom,
+        currently sticked to clipboard_display window
+        """
         clipboard_list.delete(0, tkinter.END)
         clipboard_list.insert(
             tkinter.END,
@@ -276,17 +302,13 @@ def clipboard_check() -> None:
         )
         clipboard_display.update_idletasks()
         try:
-            server_get = requests.get(utils.SERVER_URL)
+            server_get = requests.get(utils.SERVER_URL, timeout=3)
             if server_get.status_code != 200:
                 clipboard_list.insert(
-                    tkinter.END,
-                    f"Status code {server_get.status_code}, do the repo exist?",
+                    tkinter.END, f"Status code {server_get.status_code}"
                 )
             else:
                 server_get = server_get.json()
-                # testing
-                # import json
-                # server_get = json.load(open(file="E:/bruh/get/server.json", mode='br'))
                 clipboard_list.insert(tkinter.END, "List of available servers:")
                 try:
                     for index, json in enumerate(server_get):
@@ -299,9 +321,15 @@ def clipboard_check() -> None:
                     clipboard_list.insert(tkinter.END, "Error: No server found.")
                 clipboard_display.update_idletasks()
                 # get self ip address
-                ip_address = requests.get("https://httpbin.org/ip").json()["origin"]
-                clipboard_list.insert(tkinter.END, "", f"Your IP address is {ip_address}")
+                ip_address = requests.get("https://httpbin.org/ip", timeout=3).json()[
+                    "origin"
+                ]
+                clipboard_list.insert(
+                    tkinter.END, "", f"Your IP address is {ip_address}"
+                )
 
+                # todo: remove this big chuck of ugly code
+                # or at least not indent so much
                 def connect_initialize() -> None:
                     try:
                         selected = int(message_sent.get())
@@ -312,20 +340,25 @@ def clipboard_check() -> None:
                                 selected_server["port"],
                             )
                             try:
-                                s_test = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                                s_test = socket.socket(
+                                    socket.AF_INET, socket.SOCK_STREAM
+                                )
                                 s_test.close()
                             except socket.error:
                                 pass
                             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                             sock.settimeout(3)
                             cb_exp_msg_button.configure(text="Connecting...")
-                            clipboard_list.insert(tkinter.END, f"\nConnecting to {address}:{port}")
+                            clipboard_list.insert(
+                                tkinter.END, f"\nConnecting to {address}:{port}"
+                            )
                             clipboard_display.update_idletasks()
                             try:
                                 sock.connect((address, port))
                                 sock.settimeout(None)
                                 clipboard_list.insert(
-                                    tkinter.END, "Successfully connected to the server."
+                                    tkinter.END,
+                                    "Successfully connected to the server.",
                                 )
                                 cb_exp_msg_button.configure(text="Success")
                                 message_sent.delete(0, tkinter.END)
@@ -346,9 +379,8 @@ def clipboard_check() -> None:
 
                                 username = f"GUI Client <{VERSION}>"
                                 sock.send(
-                                    f"{utils.return_time(False)}[{username}]{utils.PING_MESSAGE}".encode(
-                                        utils.ENCODING
-                                    )
+                                    f"{utils.return_time(False)}[{username}]"
+                                    f"{utils.PING_MESSAGE}".encode(utils.ENCODING)
                                 )
                                 rmsg_cb = threading.Thread(target=receivemsg)
                                 rmsg_cb.start()
@@ -358,7 +390,9 @@ def clipboard_check() -> None:
                                     try:
                                         sock.close()
                                         cb_exp_msg_button.configure(text="Disconnected")
-                                        clipboard_list.insert(tkinter.END, "You are disconnected.")
+                                        clipboard_list.insert(
+                                            tkinter.END, "You are disconnected."
+                                        )
                                     except socket.error:
                                         pass
 
@@ -368,7 +402,8 @@ def clipboard_check() -> None:
                                     clipboard_display.update_idletasks()
                                     try:
                                         sock.send(
-                                            f"{utils.return_time(False)}[{username}]{message_sent.get()}".encode(
+                                            f"{utils.return_time(False)}[{username}]"
+                                            f"{message_sent.get()}".encode(
                                                 utils.ENCODING
                                             )
                                         )
@@ -378,9 +413,11 @@ def clipboard_check() -> None:
                                             "Cannot send message to server.",
                                         )
                                         clipboard_list.yview(tkinter.END)
-                                        clipboard_list.insert(tkinter.END, str(sending_error))
+                                        clipboard_list.insert(
+                                            tkinter.END, str(sending_error)
+                                        )
                                         for line_send_error in list(
-                                                traceback.format_exc().split("\n")
+                                            traceback.format_exc().split("\n")
                                         ):
                                             clipboard_list.insert(
                                                 clipboard_list.size() + 1,
@@ -388,12 +425,18 @@ def clipboard_check() -> None:
                                             )
                                     res.sound_effect("send")
                                     time.sleep(0.2)
-                                    send_message_button.configure(text="Send", command=sentmsg_sent)
+                                    send_message_button.configure(
+                                        text="Send", command=sentmsg_sent
+                                    )
                                     message_sent.delete(0, tkinter.END)
                                     clipboard_display.update_idletasks()
 
-                                cb_exp_msg_button.configure(text="Disconnect", command=disconnect)
-                                send_message_button.configure(text="Send", command=sentmsg_sent)
+                                cb_exp_msg_button.configure(
+                                    text="Disconnect", command=disconnect
+                                )
+                                send_message_button.configure(
+                                    text="Send", command=sentmsg_sent
+                                )
                                 clipboard_display.update_idletasks()
                             except socket.error:
                                 clipboard_list.insert(
@@ -401,21 +444,32 @@ def clipboard_check() -> None:
                                     "Connection Failed. Server is not online: timeout",
                                 )
                         else:
-                            clipboard_list.insert(tkinter.END, "Please enter a valid server.")
+                            clipboard_list.insert(
+                                tkinter.END, "Please enter a valid server."
+                            )
                     except ValueError:
-                        clipboard_list.insert(tkinter.END, "Please enter a valid value.")
+                        clipboard_list.insert(
+                            tkinter.END, "Please enter a valid value."
+                        )
 
                 message_sent = tkinter.Entry(clipboard_display, bd=3)
                 message_sent.place(width=540, x=10, y=450)
+
                 send_message_button = tkinter.Button(
-                    clipboard_display, text="Connect", command=connect_initialize, cursor="hand2"
+                    clipboard_display,
+                    text="Connect",
+                    command=connect_initialize,
+                    cursor="hand2",
                 )
                 send_message_button.place(height=28, width=70, x=560, y=450)
 
-                clipboard_list.insert(tkinter.END, "\nWhich server would you like to connect?")
+                clipboard_list.insert(
+                    tkinter.END, "\nWhich server would you like to connect?"
+                )
                 clipboard_list.insert(
                     tkinter.END,
-                    f"Enter {list(range(1, len(server_get) + 1))} " "in the text box below.",
+                    f"Enter {list(range(1, len(server_get) + 1))} "
+                    "in the text box below.",
                     "",
                 )
 
@@ -427,7 +481,10 @@ def clipboard_check() -> None:
             clipboard_display.update_idletasks()
 
     cb_exp_msg_button = tkinter.Button(
-        clipboard_display, text="Experimental Chatroom", command=cb_experimental_msg, cursor="hand2"
+        clipboard_display,
+        text="Experimental Chatroom",
+        command=cb_experimental_msg,
+        cursor="hand2",
     )
     cb_exp_msg_button.place(height=40, width=210, x=410, y=10)
 
@@ -455,7 +512,7 @@ def check_update() -> None:
     update_info_x_scrollbar.config(command=update_info.xview)
     try:
         update_info.insert(tkinter.END, "Checking for updates...")
-        newest_version = requests.get(utils.UPDATE_URL)
+        newest_version = requests.get(utils.UPDATE_URL, timeout=3)
         if newest_version.status_code != 200:
             update_info.insert(
                 tkinter.END,
@@ -465,7 +522,9 @@ def check_update() -> None:
             newest_version = newest_version.json()
             res.sound_effect("notice")
             for imp in list(newest_version):
-                update_info.insert(tkinter.END, f'{imp}: {newest_version[imp]["version"]}')
+                update_info.insert(
+                    tkinter.END, f'{imp}: {newest_version[imp]["version"]}'
+                )
             if newest_version["GUI"]["version"] != VERSION:
                 update_info.insert(
                     tkinter.END,
@@ -476,46 +535,11 @@ def check_update() -> None:
                 update_info.insert(tkinter.END, "Program is up-to-date!")
     except OSError:
         update_info.insert(tkinter.END, traceback.format_exc())
-    update.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 380, 190, False))
+    update.geometry(utils.tk_geo_f(utils.centre_coordinate(basic, 380, 190, False)))
     update.iconbitmap(res.abspath("res/riva.ico"))
     update.focus_force()
     update.resizable(False, False)
     update.mainloop()
-
-
-def keylogger() -> None:
-    """Displaying user keyboard input data"""
-    keylog_window = tkinter.Toplevel(basic)
-    keylog_window.title("Key input detection")
-    keylog_list_scrollbar = tkinter.Scrollbar(keylog_window, bd=10)
-    keylog_list_scrollbar.place(height=170, width=15, x=360, y=10)
-
-    keylog_list_x_scrollbar = tkinter.Scrollbar(keylog_window, bd=10, orient="horizontal")
-    keylog_list_x_scrollbar.place(height=15, width=350, x=10, y=170)
-    keylog_list = tkinter.Listbox(
-        keylog_window,
-        activestyle="none",
-        xscrollcommand=keylog_list_x_scrollbar.set,
-        yscrollcommand=keylog_list_scrollbar.set,
-    )
-    keylog_list.place(height=160, width=350, x=10, y=10)
-    keylog_list_scrollbar.config(command=keylog_list.yview)
-    keylog_list_x_scrollbar.config(command=keylog_list.xview)
-
-    def on_press(key) -> None:
-        keylog_list.insert(tkinter.END, "Key pressed: " + str(key).strip("'"))
-        keylog_list.yview(tkinter.END)
-        if key == pynput.keyboard.Key.shift:
-            keylog_window.destroy()
-
-    listener = pynput.keyboard.Listener(on_press=on_press)
-    listener.start()
-    keylog_list.insert(tkinter.END, "Output pressed key in this window. (Exit: Press Shift)")
-    keylog_window.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 380, 190, False))
-    keylog_window.iconbitmap(res.abspath("res/riva.ico"))
-    keylog_window.focus_force()
-    keylog_window.resizable(False, False)
-    keylog_window.mainloop()
 
 
 print(f"Spam Bot GUI v{VERSION} by eric15342335 (c) 2020-2023")
@@ -527,24 +551,26 @@ width = basic.winfo_screenwidth()
 
 welcome_version = tkinter.Label(basic, font=("TkDefaultFont", 10), text=VERSION)
 welcome_version.place(rely=1.0, relx=1.0, x=0, y=0, anchor=tkinter.SE)
-welcome_msg = tkinter.Label(basic, font=("Calibri", 14), text="Welcome to Spam Bot GUI !!")
+welcome_msg = tkinter.Label(
+    basic, font=("Calibri", 14), text="Welcome to Spam Bot GUI !!"
+)
 welcome_msg.place(x=20, y=30)
 
 neko_vanilla = ImageTk.PhotoImage(Image.open(res.abspath("res/vanilla.png")))
 neko_vanilla_display = tkinter.Label(basic, image=neko_vanilla)
 neko_vanilla_display.place(x=300, y=15)
 
-cat_noob = ImageTk.PhotoImage(Image.open(res.abspath("res/cat.png")))
-cat_noob_background = tkinter.Label(basic, image=cat_noob)
-cat_noob_background.place(rely=1.0, relx=1.0, x=0, y=-25, anchor=tkinter.SE)
-
-button1 = tkinter.Button(basic, text="Paste-Enter Bot", command=autopastebot, cursor="hand2")
+button1 = tkinter.Button(
+    basic, text="Paste-Enter Bot", command=autopastebot, cursor="hand2"
+)
 button1.place(height=40, width=120, x=20, y=70)
 
 button2 = tkinter.Button(basic, text="Click Bot", command=autoclickbot, cursor="hand2")
 button2.place(height=40, width=100, x=150, y=70)
 
-button3 = tkinter.Button(basic, text="Clipboard / Chatroom", command=clipboard_check, cursor="hand2")
+button3 = tkinter.Button(
+    basic, text="Clipboard / Chatroom", command=clipboard_check, cursor="hand2"
+)
 button3.place(height=40, width=160, x=320, y=70)
 
 
@@ -610,13 +636,12 @@ file_item.add_checkbutton(
     label="Pause the Clock", onvalue=True, offvalue=False, variable=Clock.enabled
 )
 about_infos.add_command(label="Check for updates", command=check_update)
-about_infos.add_command(label="Debug (Keyboard)", command=keylogger)
 about_infos.add_command(label="About", command=aboutpage)
 menu_file.add_cascade(label="File", menu=menu_view)
 menu_file.add_cascade(label="Options", menu=file_item)
 menu_file.add_cascade(label="Help", menu=about_infos)
 basic.config(menu=menu_file)
-basic.geometry("%sx%s+%s+%s" % utils.centre_coordinate(basic, 500, 290, True))
+basic.geometry(utils.tk_geo_f(utils.centre_coordinate(basic, 500, 290, True)))
 basic.iconbitmap(res.abspath("res/riva.ico"))
 basic.focus_force()
 basic.resizable(False, False)
