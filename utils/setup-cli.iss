@@ -1,7 +1,6 @@
 [Setup]
 AppName=spambotcli
-AppVersion=1.3.4
-VersionInfoVersion=1.3.4
+AppVersion=1.4.0
 WizardStyle=classic
 DefaultDirName={autodesktop}\spambotcli
 DefaultGroupName=Spam Bot Command-Line Interface
