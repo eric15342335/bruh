@@ -180,11 +180,15 @@ class SpamBot:
 def paste(spam: SpamBot, keyboard: pynput.keyboard.Controller, gui: bool) -> None:
     """Simulate LEFT_CONTROL + V"""
     while not spam.finished():
-        spam.increase()
-        keyboard.pressed(pynput.keyboard.Key.ctrl_l, "v", pynput.keyboard.Key.enter)
+        keyboard.press(pynput.keyboard.Key.ctrl_l)
+        keyboard.press("v")
+        keyboard.release("v")
+        keyboard.release(pynput.keyboard.Key.ctrl_l)
+        keyboard.tap(pynput.keyboard.Key.enter)
         time.sleep(spam.interval)
+        spam.increase()
         # Since user can press shift to stop spamming
         # we help him press shift after the spam ends
         if not gui:
             # todo: investigate why this don't work on gui
-            keyboard.pressed(pynput.keyboard.Key.shift, pynput.keyboard.Key.shift)
+            keyboard.tap(pynput.keyboard.Key.shift)

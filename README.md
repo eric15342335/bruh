@@ -3,7 +3,7 @@
 Created just for fun. <br>
 This is my first attempt to create a usable (not really) GUI interface for a python script. 
 ## Functionality
-1. SpamBot (Ctrl+V) `not working :(`
+1. SpamBot (Ctrl+V)
 2. ClickBot
 3. Text-only chat room
 4. Updates checking
