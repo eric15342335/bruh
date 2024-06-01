@@ -90,9 +90,14 @@ def centre_coordinate(
         where the window should be on the screen,
         so that it looks like centered on the screen
     it involves basic mid-point calculations
+    # USAGE: root.geometry("%sx%s+%s+%s" % centre_coordinate(window, 200, 300))
+    # where 200, 300 is width and height
     """
-    if is_base:
-        root_width, root_height = root.winfo_screenwidth(), root.winfo_screenheight()
+    if is_base:  # separate handling of window coordinate for root window
+        root_width, root_height = (
+            root.winfo_screenwidth(),
+            root.winfo_screenheight(),
+        )  # get device screen resolution
         return (
             width,
             height,
@@ -100,6 +105,7 @@ def centre_coordinate(
             int(root_height / 2 - height / 2),
         )
     # root.window.update_idletasks()
+    # todo: write description of following code
     base_width = root.winfo_width()
     base_height = root.winfo_height()
     height_coord = (
