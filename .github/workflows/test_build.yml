@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -25,7 +25,7 @@ jobs:
         pip install -U -r requirements.txt
         git clone https://github.com/pyinstaller/pyinstaller --depth=1
         cd pyinstaller/bootloader
-        python .\waf all
+        python .\waf all --gcc
         cd ..\..\
         pip install pyinstaller/.
     - name: Package using PyInstaller
@@ -34,15 +34,15 @@ jobs:
         $Resources = '--additional-hooks-dir', 'utils'
         $Icons= '--icon',  "src/res/riva.ico"
         venv\scripts\activate
-        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons
-        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons
-        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons --onefile
-        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons --onefile
+        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons --noupx
+        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons --noupx
+        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons --onefile --noupx
+        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons --onefile --noupx
 
     - name: Generate Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: builds
+        name: build-${{ matrix.python-version }}
         path: dist/
         compression-level: 9
         retention-days: 90
