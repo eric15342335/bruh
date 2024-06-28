@@ -16,7 +16,7 @@ SolidCompression=yes
 
 SourceDir=..\
 OutputDir=.
-OutputBaseFilename=spambotCLI
+OutputBaseFilename=spambotcli-install
 
 ArchitecturesAllowed=x64
 PrivilegesRequired=lowest

@@ -16,7 +16,7 @@ SolidCompression=yes
 
 SourceDir=..\
 OutputDir=.
-OutputBaseFilename=spambotGUI
+OutputBaseFilename=spambotgui-install
 
 ArchitecturesAllowed=x64
 PrivilegesRequired=lowest

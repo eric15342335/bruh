@@ -72,7 +72,7 @@ pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt"
 ```
 
 (Beta) PyInstaller Splash screen:
-Add `--splash riva.ico` to the pyinstaller command
+Add `--splash src/res/riva.ico` to the pyinstaller command
 
 PyInstaller Documentation: [Here](https://pyinstaller.org/en/stable/usage.html)
 
