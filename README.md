@@ -47,7 +47,7 @@ python3 src/gui.py  # GUI (tkinter)
 (Optional) Optimize file size by excluding useless packages:
 
 ```cmd
-set Excludes=--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude lib2to3 --exclude difflib --exclude distutils --exclude pickle
+set Excludes=--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude lib2to3 --exclude difflib --exclude pickle
 ```
 
 Set my custom hook for pyinstaller and icons:

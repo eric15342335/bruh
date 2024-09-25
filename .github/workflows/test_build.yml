@@ -4,15 +4,16 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]
+        os: [windows-latest, ubuntu-latest, macos-12, macos-14]
       fail-fast: false
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@main
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -30,7 +31,7 @@ jobs:
         pip install pyinstaller/.
     - name: Package using PyInstaller
       run: |
-        $Excludes = '--exclude', '_asyncio', '--exclude', '_bz2', '--exclude', '_decimal', '--exclude', '_hashlib', '--exclude', '_lzma' , '--exclude', '_multiprocessing' , '--exclude', '_overlapped', '--exclude', '_queue', '--exclude', 'lib2to3', '--exclude', 'difflib', '--exclude', 'distutils', '--exclude', 'pickle'
+        $Excludes = '--exclude', '_asyncio', '--exclude', '_bz2', '--exclude', '_decimal', '--exclude', '_hashlib', '--exclude', '_lzma' , '--exclude', '_multiprocessing' , '--exclude', '_overlapped', '--exclude', '_queue', '--exclude', 'lib2to3', '--exclude', 'difflib', '--exclude', 'pickle'
         $Resources = '--additional-hooks-dir', 'utils'
         $Icons= '--icon',  "src/res/riva.ico"
         venv\scripts\activate
@@ -50,4 +51,3 @@ jobs:
 
     - name: Output artifact ID
       run: echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
-
