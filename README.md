@@ -1,5 +1,18 @@
 # SpamBot
 
+## Note
+
+Currently, the platform support is limited to `Windows 10/11`.
+
+As cross-platform compatibility is not a priority for me at the moment,
+you shouldn't anticipate any updates in that regard in the near future.
+
+<!--
+List for me to pick up:
+* winsound module, aka need cross-platform .wav audio playing package?
+* Use virustotal OR hybrid-analysis to test macOS PyInstaller'ed runnable or not
+-->
+
 ## What is this?
 
 Created just for fun.
