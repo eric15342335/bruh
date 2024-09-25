@@ -41,13 +41,12 @@ jobs:
         else
           source venv/bin/activate
         fi
-        Excludes="--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude lib2to3 --exclude difflib --exclude pickle"
         Resources="--additional-hooks-dir utils"
         Icons="--icon src/res/riva.ico"
-        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons --noupx
-        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons --noupx
-        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Excludes $Resources $Icons --onefile --noupx
-        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Excludes $Resources $Icons --onefile --noupx
+        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Resources $Icons --noupx
+        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Resources $Icons --noupx
+        pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" $Resources $Icons --onefile --noupx
+        pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w $Resources $Icons --onefile --noupx
     - name: Generate Build Artifacts
       uses: actions/upload-artifact@v4
       with:

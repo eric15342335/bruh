@@ -44,12 +44,6 @@ python3 src/gui.py  # GUI (tkinter)
 
 ## Packaging using PyInstaller
 
-(Optional) Optimize file size by excluding useless packages:
-
-```cmd
-set Excludes=--exclude _asyncio --exclude _bz2 --exclude _decimal --exclude _hashlib --exclude _lzma --exclude _multiprocessing --exclude _overlapped --exclude _queue --exclude lib2to3 --exclude difflib --exclude pickle
-```
-
 Set my custom hook for pyinstaller and icons:
 
 ```cmd
@@ -60,15 +54,15 @@ set Icons=--icon "src/res/riva.ico"
 Finally, build both the cli and gui versions:
 
 ```bash
-pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" %Excludes% %Resources% %Icons%
-pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w %Excludes% %Resources% %Icons%
+pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" %Resources% %Icons%
+pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w %Resources% %Icons%
 ```
 
 If you want the executable output be one file, add the --onefile flag:
 
 ```bash
-pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" %Excludes% %Resources% %Icons% --onefile
-pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w %Excludes% %Resources% %Icons% --onefile
+pyinstaller -y --clean -n "spambotcli" src/cli.py --version-file "utils/cli.txt" %Resources% %Icons% --onefile
+pyinstaller -y --clean -n "spambotgui" src/gui.py --version-file "utils/gui.txt" -w %Resources% %Icons% --onefile
 ```
 
 (Beta) PyInstaller Splash screen:
@@ -81,8 +75,8 @@ PyInstaller Documentation: [Here](https://pyinstaller.org/en/stable/usage.html)
 ```sh
 .github/workflows   # Github Actions
 src/*.py            # Codes
-src/get             # Server lists for chatroom and version lists for checking updates
-src/res             # resources(images,audios) for the program 
+src/get/            # Server lists for chatroom and version lists for checking updates
+src/res/            # resources(images,audios) for the program 
 utils/hook-utils.py # PyInstaller hook
 utils/*.iss         # Inno setup scripts
 utils/*.txt         # windows metadata for the program 
